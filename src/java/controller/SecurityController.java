@@ -10,6 +10,7 @@ import entity.Role;
 import entity.User;
 import entity.UserRoles;
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,7 +30,7 @@ import utils.PagePathLoader;
  *
  * @author jvm
  */
-@WebServlet(name = "SecurityController", urlPatterns = {
+@WebServlet(name = "SecurityController",loadOnStartup = 1, urlPatterns = {
     "/showLogin",
     "/login",
     "/logout",
@@ -39,9 +40,32 @@ import utils.PagePathLoader;
 public class SecurityController extends HttpServlet {
     @EJB UserFacade userFacade;
     @EJB PersoneFacade personeFacade;
-    @EJB UserRoles userRoles;
     @EJB UserRolesFacade userRolesFacade;
     @EJB RoleFacade roleFacade;
+    
+    @Override
+    public void init() throws ServletException {
+        List<User> listUsers = userFacade.findAll();
+        if(!listUsers.isEmpty()){
+            return;
+        }
+        Persone persone = new Persone("Juri", "Melnikov","juri.melnikov@ivkhk.ee", "56509987");
+        personeFacade.create(persone);
+        Encription encription = new Encription();
+        String password = encription.getEncriptionPass("admin");
+        User user = new User("admin", password, true, persone);
+        userFacade.create(user);
+        Role role = new Role(RoleLogic.ROLE.ADMINISTRATOR.toString());
+        roleFacade.create(role);
+        role.setName(RoleLogic.ROLE.MANAGER.toString());
+        roleFacade.create(role);
+        role.setName(RoleLogic.ROLE.USER.toString());
+        roleFacade.create(role);
+        RoleLogic rl = new RoleLogic();
+        role = rl.getRole(RoleLogic.ROLE.ADMINISTRATOR.toString());
+        rl.setRole(role, user);
+    }
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -103,6 +127,7 @@ public class SecurityController extends HttpServlet {
                 String name = request.getParameter("name");
                 String surname = request.getParameter("surname");
                 String email = request.getParameter("email");
+                String phone = request.getParameter("phone");
                 login = request.getParameter("login");
                 String password1 = request.getParameter("password1");
                 String password2 = request.getParameter("password2");
@@ -110,7 +135,7 @@ public class SecurityController extends HttpServlet {
                     request.setAttribute("info", "Несовпадает пароль!");
                     request.getRequestDispatcher(PagePathLoader.getPagePath("showRegistration")).forward(request, response);
                 }
-                Persone persone = new Persone();
+                Persone persone = new Persone(name, surname, email, phone);
                 personeFacade.create(persone);
                 encription = new Encription();
                 encriptPassword = encription.getEncriptionPass(password1);

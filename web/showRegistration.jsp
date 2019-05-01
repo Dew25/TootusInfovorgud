@@ -18,8 +18,12 @@
           <input type="email" class="form-control" id="email" name="email" placeholder="Электронная почта">
         </div>
         <div class="form-group">
+          <label for="phone">Телефон:</label>
+          <input type="text" class="form-control" id="phone" name="phone" placeholder="Телефон">
+        </div>
+        <div class="form-group">
           <label for="login">Логин:</label>
-          <input type="text" class="form-control" id="login" name="login" placeholder="Login">
+          <input type="text" class="form-control" id="login" name="login" placeholder="Логин">
         </div>
         <div class="form-group">
           <label for="password1">Пароль:</label>
