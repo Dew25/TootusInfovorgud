@@ -1,5 +1,5 @@
-
-       <H3 class="text-center">Вы вошли как администратор приложения</H3>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+        <H3 class="text-center">Вы вошли как администратор приложения</H3>
             <c:if test="${info ne null}">
                 <div class="alert alert-primary" role="alert">${info}</div>
             </c:if>

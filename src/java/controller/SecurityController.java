@@ -109,7 +109,7 @@ public class SecurityController extends HttpServlet {
                 session.setAttribute("regUser", regUser);
                 request.setAttribute("info", "Вы вошли как "+regUser.getLogin());
                 request.setAttribute("role", rl.getRole(regUser));
-                request.getRequestDispatcher("/SessionContextServlet").forward(request, response);
+                request.getRequestDispatcher("/welcome").forward(request, response);
 
                 break;
             case "/logout":

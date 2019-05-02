@@ -22,7 +22,7 @@ import utils.PagePathLoader;
  * @author Melnikov
  */
 @WebServlet(name = "SessionContextServlet", urlPatterns = {
-    "/index",
+    "/welcome",
 })
 public class SessionContextServlet extends HttpServlet {
 
@@ -53,15 +53,15 @@ public class SessionContextServlet extends HttpServlet {
         Role role = rl.getRole(regUser);
         request.setAttribute("role", role);
         if(role.getName().equals(RoleLogic.ROLE.ADMINISTRATOR.toString())){
-            request.getRequestDispatcher(PagePathLoader.getPagePath("adminIndex")).forward(request, response);
+            request.getRequestDispatcher(PagePathLoader.getPagePath("welcomeAdmin")).forward(request, response);
             return;
         }
         if(role.getName().equals(RoleLogic.ROLE.MANAGER.toString())){
-            request.getRequestDispatcher(PagePathLoader.getPagePath("managerIndex")).forward(request, response);
+            request.getRequestDispatcher(PagePathLoader.getPagePath("welcomeManager")).forward(request, response);
             return;
         }
         if(role.getName().equals(RoleLogic.ROLE.USER.toString())){
-            request.getRequestDispatcher(PagePathLoader.getPagePath("userIndex")).forward(request, response);
+            request.getRequestDispatcher(PagePathLoader.getPagePath("welcomeUser")).forward(request, response);
             return;
         }
        
